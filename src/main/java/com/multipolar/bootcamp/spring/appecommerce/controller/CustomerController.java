@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,6 +55,18 @@ public class CustomerController {
         if (customerOptional.isPresent()) {
             customerRepository.deleteById(id);
             return ResponseEntity.ok().build();
+        } else
+            return ResponseEntity.noContent().build();
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Customer> update(@PathVariable("id") String id, @RequestBody Customer customer) {
+        Optional<Customer> customerOptional = customerRepository.findById(id);
+        if (customerOptional.isPresent()) {
+            customerOptional.get().setName(customer.getName());
+            customerOptional.get().setPhone(customer.getPhone());
+            Customer customerUpdate = customerRepository.save(customerOptional.get());
+            return ResponseEntity.ok(customerUpdate);
         } else
             return ResponseEntity.noContent().build();
     }

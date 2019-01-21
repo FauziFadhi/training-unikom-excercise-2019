@@ -42,5 +42,6 @@ public class TransactionDetail {
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;  
     
+    private int qty;
     private Double price;
 }

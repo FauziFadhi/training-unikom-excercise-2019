@@ -5,6 +5,7 @@
  */
 package com.multipolar.bootcamp.spring.appecommerce.controller;
 
+import com.multipolar.bootcamp.spring.appecommerce.entity.Customer;
 import com.multipolar.bootcamp.spring.appecommerce.entity.Shop;
 import com.multipolar.bootcamp.spring.appecommerce.repository.ShopRepository;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,6 +56,18 @@ public class ShopController {
         if (shopOptional.isPresent()) {
             shopRepository.deleteById(id);
             return ResponseEntity.ok().build();
+        } else
+            return ResponseEntity.noContent().build();
+    }
+    
+    @PutMapping("/{id}")
+    public ResponseEntity<Shop> update(@PathVariable("id") String id, @RequestBody Shop shop) {
+        Optional<Shop> shopOptional = shopRepository.findById(id);
+        if (shopOptional.isPresent()) {
+            shopOptional.get().setName(shop.getName());
+            shopOptional.get().setPhone(shop.getPhone());
+            Shop shopUpdate = shopRepository.save(shopOptional.get());
+            return ResponseEntity.ok(shopUpdate);
         } else
             return ResponseEntity.noContent().build();
     }
