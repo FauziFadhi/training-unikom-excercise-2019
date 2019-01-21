@@ -40,7 +40,7 @@ public class TransactionDetail {
     @JsonIgnoreProperties("transaction_detail")
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
-    private Item item;
+    private Item item;  
     
     private Double price;
 }
